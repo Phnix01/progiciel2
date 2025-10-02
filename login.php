@@ -10,13 +10,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
+    // DEBUG - À ajouter temporairement
+    echo "<pre>";
+    echo "Email recherché: " . $email . "\n";
+    echo "Utilisateur trouvé: " . ($user ? "OUI" : "NON") . "\n";
+    if ($user) {
+        echo "Hash en BDD: " . $user["password"] . "\n";
+        echo "Vérification mot de passe: " . (password_verify($password, $user["password"]) ? "OK" : "ECHEC") . "\n";
+    }
+    echo "</pre>";
+    // Fin du debug
+
     if ($user && password_verify($password, $user["password"])) {
-        $_SESSION["user_id"] = $user["id"];
-        $_SESSION["role"] = $user["role"];
-        header("Location: dashboard.php");
-        exit;
-    } else {
-        $error = "Email ou mot de passe incorrect.";
+        // ...
     }
 }
 ?>
